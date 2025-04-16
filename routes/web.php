@@ -39,9 +39,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::patch('/products/{id}/updateStock', [ProductController::class, 'updateStock'])->name('products.updateStock'); 
     Route::patch('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
-
+    
     // PENJUALANS
     Route::get('/penjualans', [PenjualanController::class, 'index'])->name('penjualans.index');
+    // EXPORT EXCEL
+   
+    
+    Route::get('/penjualan/export', [PenjualanController::class, 'export'])->name('penjualans.export');
+    // EXPORT PDF 
+    Route::get('/penjualan/{id}/pdf', [PenjualanController::class, 'unduhBukti'])->name('penjualans.pdf');
 });
 
 Route::prefix('employee')->name('employee.')->group(function () {
@@ -51,6 +57,15 @@ Route::prefix('employee')->name('employee.')->group(function () {
     // PENJUALANS
     Route::get('/penjualans', [EmployeePenjualanController::class, 'index'])->name('penjualans.index');
     Route::get('/penjualans/card', [EmployeePenjualanController::class, 'card'])->name('penjualans.card');
-    Route::get('/create', [EmployeePenjualanController::class, 'create'])->name('penjualan.create');
     Route::get('/penjualans/preview', [EmployeePenjualanController::class, 'preview'])->name('penjualans.preview');
+
+    Route::get('/create', [EmployeePenjualanController::class, 'create'])->name('penjualan.create');
+    Route::post('/store-step-1', [EmployeePenjualanController::class, 'storeStep1'])->name('penjualan.storeStep1');
+
+    Route::get('/step-2,', [EmployeePenjualanController::class, 'step2'])->name('penjualan.step2');
+    Route::post('/store-step-2', [EmployeePenjualanController::class, 'storeStep2'])->name('penjualan.storeStep2');
+    Route::get('/penjualan/detail/{id}', [EmployeePenjualanController::class, 'detail'])->name('penjualan.detail');
+    Route::get('/simpan', [EmployeePenjualanController::class, 'simpanPenjualan'])->name('penjualan.simpan');
+    Route::get('/print', [EmployeePenjualanController::class, 'export'])->name('penjualans.export');
+    Route::get('/penjualan/{id}/pdf', [EmployeePenjualanController::class, 'unduhBukti'])->name('penjualans.pdf');
 });

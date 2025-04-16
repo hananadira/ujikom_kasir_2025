@@ -13,14 +13,22 @@ class Product extends Model
         'image',
     ];
 
-    public function items()
-    {
-        return $this->hasMany(detailPenjualan::class);
+    public function detailPenjualans() {
+        return $this->hasMany(DetailPenjualan::class, 'id');
     }
 
-    public function detailPenjualans()
+    public function items() {
+        return $this->hasMany(DetailPenjualan::class, 'id');
+    }
+
+    public function member() {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
+
+    public function penjualans()
     {
-        return $this->hasMany(detailPenjualan::class);
+        return $this->belongsToMany(Penjualan::class, 'detail_penjualans', 'product_id', 'penjualan_id')
+                    ->withPivot('qty', 'harga', 'subtotal');
     }
 
     

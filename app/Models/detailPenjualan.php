@@ -14,13 +14,20 @@ class detailPenjualan extends Model
         'sub_total',
     ];
 
+    public function items() {
+        return $this->belongsTo(Penjualan::class, 'penjualan_id', 'id');
+    }
+
+    public function product() {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function member() {
+        return $this->belongsTo(Member::class, 'member_id', 'id');
+    }
+
     public function penjualan()
     {
         return $this->belongsTo(Penjualan::class);
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
-use App\Exports\PenjualanExport;
+use App\Exports\ExportPenjualan;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -22,6 +22,21 @@ class PenjualanController extends Controller
          return view('admin.penjualans.index', compact('penjualans'));
     }
 
+    // di PenjualanController.php
+    public function export()
+    {
+        // dd('export');
+        return Excel::download(new ExportPenjualan, 'penjualan.xlsx');
+    }
+
+    public function unduhBukti($id)
+    {
+        $penjualan = Penjualan::with(['member', 'detailPenjualan.product'])->findOrFail($id);
+
+        return Pdf::loadView('admin.penjualans.strukPDF', compact('penjualan'))
+                ->setPaper('A5')
+                ->download('bukti-penjualan-'.$penjualan->id.'.pdf');
+    }
 
     /**
      * Show the form for creating a new resource.

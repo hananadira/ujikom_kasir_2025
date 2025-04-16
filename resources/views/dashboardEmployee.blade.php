@@ -4,9 +4,16 @@
 @php
     use Carbon\Carbon;
     use App\Models\Penjualan;
-
     // Ambil tanggal hari ini (Asia/Jakarta)
-    $today = Carbon::now('Asia/Jakarta')->toDateString();
+    $today = now()->toDateString();
+
+    $memberSalesToday = Penjualan::whereDate('created_at', $today)
+        ->where('is_member', 'member')
+        ->count();
+
+    $nonMemberSalesToday = Penjualan::whereDate('created_at', $today)
+        ->where('is_member', 'bukan_member')
+        ->count();
 
     // Hitung jumlah penjualan hari ini
     $todaySales = Penjualan::whereDate('created_at', $today)->count();
@@ -43,6 +50,13 @@
                 <p class="text-3xl font-bold text-gray-900">{{ $todaySales }}</p>
                 <p class="text-gray-600">Jumlah total penjualan yang terjadi hari ini.</p>
             </div>
+            <div class="mt-6 flex flex-col items-center text-center">
+                <ul class="mt-2 text-gray-700 space-y-1">
+                    <li>Penjualan oleh Member: <strong>{{ $memberSalesToday }}</strong></li>
+                    <li>Penjualan oleh Non-Member: <strong>{{ $nonMemberSalesToday }}</strong></li>
+                </ul>
+            </div>            
+            
             <div class="bg-gray-100 text-center py-3 text-gray-500 text-sm">
                 Terakhir diperbarui: 
                 {{ $lastUpdateToday ? $lastUpdateToday->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') : 'Belum ada penjualan hari ini' }}

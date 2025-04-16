@@ -16,12 +16,12 @@
 </head>
 <body>
 
-    <h3>Indo April</h3>
+    <h3>Kasir</h3>
     <p>
-        Member Status : Bukan Member<br>
-        No. HP : - <br>
-        Bergabung Sejak : - <br>
-        Poin Member :0
+        Member Status : {{ optional($penjualan->member)->nama_member ?? 'Bukan Member' }}<br>
+        No. HP : {{ $penjualan->member->nomor_telepon ?? $penjualan->customer_phone ?? '-' }}<br>
+        Bergabung Sejak : {{ $penjualan->member->created_at->format('d F Y') ?? '-' }}<br>
+        Poin Member : {{ $penjualan->member->points ?? 0 }}
     </p>
 
     <table border="0">
@@ -34,35 +34,40 @@
             </tr>
         </thead>
         <tbody>
+            @if (!empty($penjualan->detailPenjualan) && is_iterable($penjualan->detailPenjualan))
+                        @foreach($penjualan->detailPenjualan as $item)
                             <tr class="border-b">
-                                <td class="py-2">produk 1</td>
-                                <td class="py-2 text-center">20</td>
-                                <td class="py-2 text-right">Rp 100.000</td>
-                                <td class="py-2 text-right">Rp 100.000</td>
+                                <td class="py-2">{{ $item->product->nama_produk }}</td>
+                                <td class="py-2 text-center">{{ $item->qty }}</td>
+                                <td class="py-2 text-right">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td class="py-2 text-right">Rp {{ number_format($item->sub_total, 0, ',', '.') }}</td>
                             </tr>
+                        @endforeach
+                    @else
                         <tr>
                             <td colspan="4" class="text-center py-2 text-gray-500">Tidak ada produk</td>
                         </tr>
+                    @endif
         </tbody>
     </table>
 
     <table>
         <tr>
             <td width="50%">Total Harga</td>
-            <td class="right bold">Rp. 100.000</td>
+            <td class="right bold">Rp. {{ number_format($penjualan->total_payment, 0, ',', '.') }}</td>
         </tr>
         <tr>
-            <td>Poin Digunakan: 0</td>
-            <td class="right">Harga Setelah Poin: Rp. 0</td>
+            <td>Poin Digunakan: {{ $penjualan->point_used }}</td>
+            <td class="right">Harga Setelah Poin: Rp. {{ number_format($penjualan->total_payment - $penjualan->point_used, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td>Total Kembalian</td>
-            <td class="right bold">Rp. 0</td>
+            <td class="right bold">Rp. {{ number_format($penjualan->change, 0, ',', '.') }}</td>
         </tr>
     </table>
 
     <div class="footer">
-        10 - 04 - 2025 | Petugas<br><br>
+        {{ $penjualan->created_at }} | Petugas<br><br>
         <strong>Terima kasih atas pembelian Anda!</strong>
     </div>
 

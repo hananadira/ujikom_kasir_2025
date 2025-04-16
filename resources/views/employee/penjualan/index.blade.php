@@ -4,20 +4,26 @@
 <div class="container px-4">
     <div class="max-w-full bg-white overflow-x-auto">
 
-        <!-- Breadcrumb -->
-        <nav class="mb-4 text-sm text-gray-600 flex items-center gap-2">
-            <a href="{{ route('dashboard') }}" class="text-blue-600 hover:underline">
-                <svg class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
-                </svg>                      
-            </a> >
-            <a href="{{ route('admin.products.index') }}" class="text-blue-600 hover:underline">Penjualan</a>
-        </nav>
+       <!-- Breadcrumb -->
+       <nav class="mb-6 flex items-center text-sm text-gray-600 space-x-2">
+        <a href="{{ route('dashboardEmployee') }}" class="flex items-center text-blue-600 hover:underline hover:text-blue-800">
+            <svg class="w-5 h-5 mr-1 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/>
+            </svg>
+            Dashboard
+        </a>
+        <span>/</span>
+        <a href="{{ route('employee.penjualans.index') }}" class="text-blue-600 hover:underline hover:text-blue-800">
+            Penjualan
+        </a>
+    </nav>
 
-        <!-- Header -->
-        <div class="flex justify-between items-center pb-4">
-            <h2 class="text-3xl font-bold text-gray-900">Penjualan</h2>
-        </div>
+    <!-- Header -->
+    <div class="flex justify-between items-center pb-6 mb-4">
+        <h2 class="text-3xl font-bold text-gray-800 tracking-tight">Daftar Penjualan</h2>
+    </div>
         
         <!-- Alerts -->
         @if(Session::get('success'))
@@ -38,7 +44,7 @@
                 <a href="{{ route('employee.penjualans.card') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     Tambah Penjualan
                 </a>
-                <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <a href="{{ route('employee.penjualans.export') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     Eksport Penjualan (.xlsx)
                 </a>
             </div>
@@ -68,7 +74,7 @@
                                 <button onclick="openModal({{ $penjualan->id }})" class="bg-yellow-400 text-white px-3 py-1 rounded-lg hover:bg-yellow-500">
                                     LIHAT
                                 </button>                                
-                                <form action="#" method="GET" target="_blank">
+                                <form action="{{ route('employee.penjualans.pdf', $penjualan->id) }}" method="GET" target="_blank">
                                     <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">UNDUH BUKTI</button>
                                 </form>
                             </td>

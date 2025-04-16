@@ -11,4 +11,12 @@ class Member extends Model
        'nomor_telepon',
         'points',
     ];
+
+    public function penjualan() {
+        return $this->hasMany(Penjualan::class, 'member_id');
+    }
+
+    public function products() {
+        return $this->belongsToMany(DetailPenjualan::class, 'member_id');
+    }
 }
